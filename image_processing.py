@@ -1,39 +1,49 @@
+import sys, os
 
-def flip_list(lst):
-    if not lst:
-        return lst
 
-    is_vertical = isinstance(lst[0], list)
-    
-    if is_vertical:
-        return [el[0] for el in lst]
-    x = [[el] for el in lst]
+def flip_list(my_list):
+    x = [[el] for el in my_list]
+    clean_list = [q[0].replace('\n', ' ') for q in x]
+    return clean_list
 
-    return x
+def to_clean_list(file):
+    as_list = []
+    for line in file:
+        as_list.append(line)
+    clean_list = [q.replace('\n', ' ') for q in as_list]
+    return clean_list
 
 
 if __name__=='__main__':
-    with open('input.txt') as my_file:
-        file_to_list = []
-        for line in my_file:
-            file_to_list.append(line)
-        g = flip_list(file_to_list)
-        gg = [q[0].replace('\n', ' ') for c,q in enumerate(g) ]
+
+    try:
+        file_name=sys.argv[1]
+    except:
+        print(f'Error: file not specified\nUsage: python {os.path.basename(__file__)} file.txt')
+        exit()
+    with open(sys.argv[1]) as file:
+        
+        clean_list = to_clean_list(file)
+        flipped = flip_list(clean_list)
+        
         #print(gg)
-        ss = []
-        longest = max(len(long) for long in gg )#for x in long)
+        result = []
+        longest = max(len(long) for long in clean_list)
         #print(longest)
-        for c,x in enumerate(gg):
+        for c,x in enumerate(clean_list):
             while len(x) < longest:
                 x += " "
-                gg[c] = x
+                clean_list[c] = x
                 #print(gg[c])
         #print(gg)
         for x in range(longest):
-            for y, z in enumerate(gg):
+            for y, z in enumerate(clean_list):
                 print(z[x], sep='', end='')
                 if y % longest == 0:
                     print('')
-        print(ss,end="\r")
+        print(result,end="\r")
+    
+
+    
 
 
